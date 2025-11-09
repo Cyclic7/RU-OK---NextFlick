@@ -8,29 +8,53 @@ use App\Models\Genre;
 
 class MovieList extends Component
 {
-    public $search = '';
+    public $movies;
+    public $genreName = '';
     public $selectedGenre = '';
+    public $search = '';
 
-    protected $layout = 'layouts.app';
+    protected $listeners = ['genreSelected', 'searchUpdated'];
 
-    public function render()
+    public function mount()
     {
-        $query = Movie::query()->with('genres');
+        $this->loadMovies();
+    }
+
+    public function genreSelected($id)
+    {
+        $this->selectedGenre = $id;
+        $this->loadMovies();
+    }
+
+    public function searchUpdated($query)
+    {
+        $this->search = $query;
+        $this->loadMovies();
+    }
+
+    public function loadMovies()
+    {
+        $query = Movie::with('genres');
+
+        if ($this->selectedGenre) {
+            $query->whereHas('genres', function ($q) {
+                $q->where('id', $this->selectedGenre);
+            });
+        }
 
         if ($this->search) {
             $query->where('title', 'like', '%' . $this->search . '%');
         }
 
-        if ($this->selectedGenre) {
-            $query->whereHas('genres', function ($q) {
-                $q->where('genres.id', $this->selectedGenre);
-            });
-        }
+        $this->movies = $query->get();
 
-        return view('livewire.movie-list', [
-            'movies' => $query->get(),
-            'genres' => Genre::all(),
-        ]);
+        $this->genreName = $this->selectedGenre
+            ? optional(Genre::find($this->selectedGenre))->name
+            : '';
+    }
+
+    public function render()
+    {
+        return view('livewire.movie-list');
     }
 }
-//gwapo ko

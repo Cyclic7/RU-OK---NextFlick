@@ -1,35 +1,18 @@
 <div class="bg-gray-900 min-h-screen text-white">
     <!-- Navbar -->
-    <nav class="bg-gray-800 px-6 py-4 flex justify-between items-center sticky top-0 z-50">
-        <div class="text-2xl font-bold text-red-500">NextFlick</div>
-
-        <div class="flex items-center space-x-4">
-            <input
-                wire:model.live="search"
-                type="text"
-                placeholder="Search movies..."
-                class="px-3 py-2 rounded bg-gray-700 text-white focus:outline-none"
-            >
-
-            <select
-                wire:model.live="selectedGenre"
-                class="px-3 py-2 rounded bg-gray-700 text-white"
-            >
-                <option value="">All Genres</option>
-                @foreach ($genres as $genre)
-                    <option value="{{ $genre->id }}">{{ $genre->name }}</option>
-                @endforeach
-            </select>
-
-            <a href="#" class="hover:text-red-400">Login</a>
-            <a href="#" class="hover:text-red-400">Register</a>
-        </div>
-    </nav>
+    <livewire:partials.navbar />
 
     <!-- Hero Section -->
-    <section class="text-center py-12 bg-gray-900">
-        <h1 class="text-4xl font-bold mb-4">Top Rated Movies</h1>
-        <p class="text-gray-400">Discover and review upcoming films</p>
+    <section class="text-center py-12 bg-gray-900 transition-all duration-500">
+        @if ($genreName)
+            <h1 class="text-4xl font-bold mb-4 text-red-400">
+                {{ $genreName }} Movies
+            </h1>
+            <p class="text-gray-400">Browse the best {{ strtolower($genreName) }} films</p>
+        @else
+            <h1 class="text-4xl font-bold mb-4 text-red-400">Top Rated Movies</h1>
+            <p class="text-gray-400">Discover and review upcoming films</p>
+        @endif
     </section>
 
     <!-- Movie Grid -->

@@ -7,9 +7,20 @@ use App\Livewire\Settings\TwoFactor;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use App\Livewire\MovieList;
-use App\Livewire\MovieDetails;
+use App\Livewire\MovieDetails;use App\Livewire\Auth\Login;
+use App\Livewire\Auth\Register;
 
-Route::get('/', MovieList::class)->name('home');
+
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', Profile::class)->name('profile.show');
+});
+
+
+
+Route::get('/', Login::class)->name('login');
+Route::get('/register', Register::class)->name('register');
+Route::get('/list', MovieList::class)->name('home');
 Route::get('/movies/{id}', MovieDetails::class)->name('movies.details');
 
 
