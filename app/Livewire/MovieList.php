@@ -35,7 +35,7 @@ class MovieList extends Component
 
     public function loadMovies()
     {
-        $query = Movie::with('genres');
+        $query = Movie::with('genres', 'likes', 'reviews');
 
         if ($this->selectedGenre) {
     $query->whereHas('genres', function ($q) {

@@ -13,18 +13,24 @@ class RatingSeeder extends Seeder
     {
         // Create some dummy users if none exist
         if (User::count() === 0) {
-            \App\Models\User::factory(5)->create();
+            \App\Models\User::factory(10)->create();
         }
 
         $users = User::all();
         $movies = Movie::all();
 
         foreach ($movies as $movie) {
-            foreach ($users->random(rand(2, 5)) as $user) {
+            // Create realistic tomatometer ratings: max 100 per movie
+            $numRatings = rand(5, 100); // 5 to 100 ratings per movie for tomatometer
+            $selectedUsers = $users->random(min($numRatings, $users->count()));
+
+            foreach ($selectedUsers as $user) {
+                // Mix of high and low ratings for varied tomatometer scores
+                $score = rand(1, 10); // Include low ratings from 1-10
                 Rating::create([
                     'user_id' => $user->id,
                     'movie_id' => $movie->id,
-                    'score' => rand(6, 10),
+                    'score' => $score,
                 ]);
             }
         }

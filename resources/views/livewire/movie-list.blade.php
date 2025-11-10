@@ -89,9 +89,24 @@
                             </div>
 
                             <div class="flex items-center justify-between">
-                                <span class="text-yellow-400 font-bold text-sm">
-                                    ⭐ {{ $movie->average_rating }}
-                                </span>
+                                <div class="flex items-center space-x-4">
+                                    <span class="text-yellow-400 font-bold text-sm">
+                                        ⭐ {{ $movie->average_rating }}
+                                    </span>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="font-bold text-sm {{ $movie->tomatometer_status === 'Fresh' ? 'text-green-400' : ($movie->tomatometer_status === 'Certified Fresh' ? 'text-yellow-400' : 'text-red-400') }}">
+                                            {{ $movie->tomatometer_icon }} {{ $movie->tomatometer }}%
+                                        </span>
+                                        <span class="text-gray-400 text-xs">({{ $movie->ratings()->count() }} ratings)</span>
+                                        @if($movie->tomatometer_status === 'Certified Fresh')
+                                            <span class="bg-yellow-500 text-black text-xs px-1 py-0.5 rounded font-bold">CERTIFIED FRESH</span>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-4 text-sm text-gray-400">
+                                    <span>👍 {{ $movie->likes_count }}</span>
+                                    <span>👎 {{ $movie->dislikes_count }}</span>
+                                </div>
                                 <a href="/movies/{{ $movie->id }}" class="text-red-400 hover:text-red-500 text-sm">
                                     View Details
                                 </a>
