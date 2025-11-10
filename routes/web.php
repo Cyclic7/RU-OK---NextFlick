@@ -9,18 +9,19 @@ use Laravel\Fortify\Features;
 use App\Livewire\MovieList;
 use App\Livewire\MovieDetails;use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
+use App\Livewire\MovieComments;
 
-
-
+Route::get('/movies/{id}/details', MovieDetails::class)->name('movie.details');
+Route::get('/movies/{id}/comments', MovieComments::class)->name('movie.comments');
 Route::middleware('auth')->group(function () {
     Route::get('/profile', Profile::class)->name('profile.show');
 });
 
 
 
-Route::get('/', Login::class)->name('login');
+Route::get('/login', Login::class)->name('login');
 Route::get('/register', Register::class)->name('register');
-Route::get('/list', MovieList::class)->name('home');
+Route::get('/', MovieList::class)->name('home');
 
 
 Route::get('/movies/{id}', MovieDetails::class)->name('movies.details');
