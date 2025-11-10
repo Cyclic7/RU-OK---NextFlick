@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     @include('partials.head')
+@livewireStyles
+...
 
 
 </head>
@@ -10,6 +12,7 @@
          @include('partials.navbar')
         <flux:main>
             {{ $slot }}
+            @livewireScripts
         </flux:main>
     </x-layouts.app.sidebar>
 </body>

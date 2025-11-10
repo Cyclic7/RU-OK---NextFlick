@@ -11,7 +11,6 @@ class Navbar extends Component
     public $selectedGenre = '';
     public $search = '';
     public $genres;
-    public $showProfileMenu = false;
 
     public function mount()
     {
@@ -28,11 +27,6 @@ class Navbar extends Component
         $this->dispatch('searchUpdated', $value);
     }
 
-    public function toggleProfileMenu()
-    {
-        $this->showProfileMenu = !$this->showProfileMenu;
-    }
-
     public function logout()
     {
         Auth::logout();
@@ -41,7 +35,7 @@ class Navbar extends Component
 
     public function render()
     {
-        return view('partials.navbar', [
+        return view('livewire.partials.navbar', [
             'user' => Auth::user(),
         ]);
     }

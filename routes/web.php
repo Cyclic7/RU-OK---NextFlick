@@ -21,6 +21,8 @@ Route::middleware('auth')->group(function () {
 Route::get('/', Login::class)->name('login');
 Route::get('/register', Register::class)->name('register');
 Route::get('/list', MovieList::class)->name('home');
+
+
 Route::get('/movies/{id}', MovieDetails::class)->name('movies.details');
 
 
