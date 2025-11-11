@@ -56,12 +56,22 @@
                 >
             </div>
 
-            <button
-                type="submit"
-                class="w-full py-2 mt-3 bg-red-600 hover:bg-red-700 rounded-lg font-semibold transition"
-            >
-                Register
-            </button>
+            <!-- ✅ Register + Cancel Buttons -->
+            <div class="flex flex-col sm:flex-row gap-3 mt-4">
+                <button
+                    type="submit"
+                    class="flex-1 py-2 bg-red-600 hover:bg-red-700 rounded-lg font-semibold transition"
+                >
+                    Register
+                </button>
+
+                <a
+                    href="{{ route('home') }}"
+                    class="flex-1 py-2 text-center bg-gray-700 hover:bg-gray-600 rounded-lg font-semibold transition"
+                >
+                    Cancel
+                </a>
+            </div>
         </form>
 
         <p class="text-center text-sm text-gray-400 mt-6">
@@ -70,7 +80,6 @@
         </p>
     </div>
 
-    <!-- Simple fade-in animation -->
     <style>
         @keyframes fade-in {
             from { opacity: 0; transform: translateY(10px); }

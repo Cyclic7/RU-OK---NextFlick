@@ -2,6 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
 <head>
     @include('partials.head')
+
 </head>
 <body class="min-h-screen bg-white dark:bg-zinc-800">
 
@@ -23,10 +24,10 @@
     <!-- Navigation -->
     <flux:navlist variant="outline">
         <flux:navlist.group :heading="__('Platform')" class="grid">
-            <flux:navlist.item 
-                icon="home" 
-                :href="route('dashboard')" 
-                :current="request()->routeIs('dashboard')" 
+            <flux:navlist.item
+                icon="home"
+                :href="route('dashboard')"
+                :current="request()->routeIs('dashboard')"
                 wire:navigate
             >
                 {{ __('Dashboard') }}
@@ -66,7 +67,7 @@
                     <div class="grid flex-1 text-start text-sm leading-tight">
                         <span class="truncate font-semibold">{{ $userName }}</span>
                         <span class="truncate text-xs">{{ $userEmail }}</span>
-                    </div>  
+                    </div>
                 </div>
             </div>
 
@@ -132,5 +133,8 @@
 {{ $slot }}
 
 @fluxScripts
+ @livewireScripts
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
 </body>
 </html>

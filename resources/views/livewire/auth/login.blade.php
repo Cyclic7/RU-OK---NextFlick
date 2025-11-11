@@ -61,6 +61,16 @@
             Don’t have an account?
             <a href="{{ route('register') }}" class="text-red-400 hover:text-red-500 font-medium">Register</a>
         </p>
+
+        {{-- ✅ Go Back Button --}}
+        <div class="text-center mt-4">
+            <button
+                onclick="window.location.href='{{ session('url.intended', url()->previous()) }}'"
+                class="text-gray-400 hover:text-white transition underline text-sm"
+            >
+                ← Go Back
+            </button>
+        </div>
     </div>
 
     <!-- Simple fade-in animation -->

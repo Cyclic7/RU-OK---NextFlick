@@ -10,6 +10,24 @@ use App\Livewire\MovieList;
 use App\Livewire\MovieDetails;use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 use App\Livewire\MovieComments;
+use App\Livewire\Admin\Dashboard;
+
+
+
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin/dashboard', Dashboard::class)
+        ->name('admin.dashboard');
+});
+
+
+
+
+
+
+
+
 
 Route::get('/movies/{id}/details', MovieDetails::class)->name('movie.details');
 Route::get('/movies/{id}/comments', MovieComments::class)->name('movie.comments');

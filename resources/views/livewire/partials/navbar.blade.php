@@ -41,6 +41,16 @@
                     @endforeach
                 </select>
 
+                <!-- ✅ Admin Panel Button (only for admins) -->
+                @auth
+                    @if (Auth::user()->is_admin)
+                        <a href="{{ route('admin.dashboard') }}"
+                           class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-semibold transition">
+                            🎬 Admin Panel
+                        </a>
+                    @endif
+                @endauth
+
                 <!-- Profile -->
                 @auth
                     <a href="{{ route('profile.show') }}" class="flex items-center gap-2">

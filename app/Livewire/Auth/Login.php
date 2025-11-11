@@ -12,6 +12,14 @@ class Login extends Component
     public $remember = false;
     public $errorMessage = '';
 
+    public function mount()
+    {
+        // ✅ Store the previous page (if not already coming from login/register)
+        if (!session()->has('url.intended') && url()->previous() !== route('login')) {
+            session(['url.intended' => url()->previous()]);
+        }
+    }
+
     protected $rules = [
         'email' => 'required|email',
         'password' => 'required|min:6',
@@ -23,7 +31,16 @@ class Login extends Component
 
         if (Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
             session()->regenerate();
-            return redirect()->route('home');
+
+            $user = Auth::user();
+
+            // ✅ Redirect admin or return to intended page
+            if ($user->is_admin) {
+                return redirect()->route('admin.dashboard');
+            }
+
+            // ✅ Go back to where they were (movie page, etc.)
+            return redirect()->intended(route('home'));
         }
 
         $this->errorMessage = 'Invalid email or password.';
@@ -34,3 +51,4 @@ class Login extends Component
         return view('livewire.auth.login');
     }
 }
+
