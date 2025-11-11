@@ -1,14 +1,4 @@
-<!DOCTYPE html>
-<html lang="en" x-data="{ sidebarOpen: true }">
-<head>
-    <meta charset="UTF-8">
-    <title>Admin Dashboard</title>
-    @vite('resources/css/app.css')
-    @livewireStyles
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-</head>
-<body class="flex bg-gray-900 text-white min-h-screen">
-
+<div class="flex bg-gray-900 text-white min-h-screen" x-data="{ sidebarOpen: true }">
     <!-- Sidebar -->
     <aside class="bg-gray-800 w-64 min-h-screen p-4">
         <h1 class="text-xl font-bold mb-6">🎬 Movie Admin</h1>
@@ -54,7 +44,4 @@
             </div>
         </div>
     </main>
-
-    @livewireScripts
-</body>
-</html>
+</div>
