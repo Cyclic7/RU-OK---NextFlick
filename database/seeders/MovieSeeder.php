@@ -21,7 +21,7 @@ class MovieSeeder extends Seeder
             [
                 'title' => 'Spider-Man: Brand New Day',
                 'description' => 'Spider-Man embarks on a fresh start, balancing heroism and personal life in a new era.',
-                'poster_url' => 'https://image.tmdb.org/t/p/w300/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg', // ✅ specific image
+                'poster_url' => asset('storage/posters/NowYouSeeMe'), // ✅ specific image
                 'release_year' => 2025,
                 'average_rating' => 8.8,
             ],
