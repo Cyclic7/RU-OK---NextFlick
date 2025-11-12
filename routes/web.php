@@ -1,61 +1,68 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use Laravel\Fortify\Features;
+
+// 🎬 Frontend Components
+use App\Livewire\MovieList;
+use App\Livewire\MovieDetails;
+use App\Livewire\MovieComments;
+
+// 👤 Auth Components
+use App\Livewire\Auth\Login;
+use App\Livewire\Auth\Register;
+
+// ⚙️ Settings Components
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
 use App\Livewire\Settings\TwoFactor;
-use Illuminate\Support\Facades\Route;
-use Laravel\Fortify\Features;
-use App\Livewire\MovieList;
-use App\Livewire\MovieDetails;use App\Livewire\Auth\Login;
-use App\Livewire\Auth\Register;
-use App\Livewire\MovieComments;
+
+// 🧩 Admin Components
 use App\Livewire\Admin\Dashboard;
+use App\Livewire\Admin\AdminMovies;
 
-
-
-
-
-Route::middleware(['auth'])->group(function () {
-    Route::get('/admin/dashboard', Dashboard::class)
-        ->name('admin.dashboard');
-});
-
-
-
-
-
-
-
-
-
+// ======================================================
+// 🧭 PUBLIC ROUTES (No Login Required)
+// ======================================================
+Route::get('/', MovieList::class)->name('home');
 Route::get('/movies/{id}/details', MovieDetails::class)->name('movie.details');
 Route::get('/movies/{id}/comments', MovieComments::class)->name('movie.comments');
-Route::middleware('auth')->group(function () {
+
+// ======================================================
+// 🔐 AUTH ROUTES (Guest Only)
+// ======================================================
+Route::middleware(['guest'])->group(function () {
+    Route::get('/login', Login::class)->name('login');
+    Route::get('/register', Register::class)->name('register');
+});
+
+// ======================================================
+// 👤 USER DASHBOARD & PROFILE (Requires Login)
+// ======================================================
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', \App\Livewire\Admin\Dashboard::class)->name('dashboard');
     Route::get('/profile', Profile::class)->name('profile.show');
 });
 
+// ======================================================
+// 🧑‍💼 ADMIN ROUTES (Requires Login + Optional Admin Middleware)
+// ======================================================
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', Dashboard::class)->name('dashboard');
+    Route::get('/movies', AdminMovies::class)->name('movies');
 
+    // You can add admin-specific middleware later:
+    // Route::middleware(['admin'])->group(function () {
+    //     // Admin-only routes
+    // });
+});
 
-Route::get('/login', Login::class)->name('login');
-Route::get('/register', Register::class)->name('register');
-Route::get('/', MovieList::class)->name('home');
-
-
-Route::get('/movies/{id}', MovieDetails::class)->name('movies.details');
-
-
-// Route::get('/welcome', function () {
-//     return view('welcome');
-// })->name('home');
-
-
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
-
+// ======================================================
+// ⚙️ SETTINGS ROUTES (Fortify - Requires Login)
+// ======================================================
 Route::middleware(['auth'])->group(function () {
-    Route::redirect('settings', 'settings/profile');
+    Route::redirect('settings', 'settings/profile')->name('settings');
 
     Route::get('settings/profile', Profile::class)->name('profile.edit');
     Route::get('settings/password', Password::class)->name('user-password.edit');
@@ -63,13 +70,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('settings/two-factor', TwoFactor::class)
         ->middleware(
-            when(
-                Features::canManageTwoFactorAuthentication()
-                    && Features::optionEnabled(Features::twoFactorAuthentication(), 'confirmPassword'),
-                ['password.confirm'],
-                [],
-            ),
+            Features::optionEnabled(Features::twoFactorAuthentication(), 'confirm') ?
+                ['password.confirm'] : []
         )
         ->name('two-factor.show');
 });
-
