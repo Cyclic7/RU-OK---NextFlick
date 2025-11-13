@@ -24,7 +24,7 @@
                             {{ $movie->description ?? 'No description available.' }}
                         </p>
                         <a
-                            href="/movies/{{ $movie->id }}"
+                            href="{{ route('movie.details', $movie->id) }}"
                             class="inline-block mt-5 bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-lg text-sm sm:text-base transition"
                         >
                             View Details
@@ -107,7 +107,7 @@
                                     <span>👍 {{ $movie->likes_count }}</span>
                                     <span>👎 {{ $movie->dislikes_count }}</span>
                                 </div>
-                                <a href="/movies/{{ $movie->id }}" class="text-red-400 hover:text-red-500 text-sm">
+                                <a href="{{ route('movie.details', $movie->id) }}" class="text-red-400 hover:text-red-500 text-sm">
                                     View Details
                                 </a>
                             </div>

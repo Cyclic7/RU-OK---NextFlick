@@ -1,172 +1,134 @@
-<!-- resources/views/livewire/admin/dashboard.blade.php -->
-<div class="p-8 bg-gray-900 text-white min-h-screen">
+<div class="p-6 bg-gray-900 text-white min-h-screen">
     <!-- Header -->
     <div class="mb-8">
-        <h1 class="text-3xl font-bold flex items-center gap-3">📊 Movie Admin Dashboard</h1>
-        <p class="text-gray-400 mt-2">Comprehensive overview of your movie platform</p>
+        <h1 class="text-3xl font-bold flex items-center gap-2">🚀 Upcoming Movies Dashboard</h1>
+        <p class="text-gray-400 mt-1">Focus on future releases - this is what users see!</p>
+        
+        <!-- Quick Links -->
+        <div class="flex gap-3 mt-4">
+            <a href="{{ route('home') }}" 
+               class="bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded-lg text-sm transition">
+                👀 View Website
+            </a>
+            <form method="POST" action="{{ route('logout') }}" class="inline">
+                @csrf
+                <button type="submit" 
+                        class="bg-gray-600 hover:bg-gray-500 px-4 py-2 rounded-lg text-sm transition">
+                    👤 Switch to Regular User
+                </button>
+            </form>
+        </div>
     </div>
 
     <!-- Stats Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <!-- Total Movies -->
-        <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 hover:border-blue-500 transition group">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-gray-400 text-sm">Total Movies</p>
-                    <p class="text-3xl font-bold mt-2">{{ $totalMovies }}</p>
-                </div>
-                <div class="text-3xl group-hover:scale-110 transition">🎬</div>
-            </div>
-            <div class="mt-4 text-sm text-green-400 flex items-center gap-1">
-                ↑ +{{ $moviesThisMonth }} this month
-            </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div class="bg-green-600 p-4 rounded-lg text-center">
+            <div class="text-2xl font-bold">{{ $stats['upcoming_count'] }}</div>
+            <div class="text-green-200 text-sm">Upcoming</div>
         </div>
-
-        <!-- Total Users -->
-        <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 hover:border-green-500 transition group">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-gray-400 text-sm">Total Users</p>
-                    <p class="text-3xl font-bold mt-2">{{ $totalUsers }}</p>
-                </div>
-                <div class="text-3xl group-hover:scale-110 transition">👤</div>
-            </div>
+        
+        <div class="bg-blue-600 p-4 rounded-lg text-center">
+            <div class="text-2xl font-bold">{{ $stats['total_movies'] }}</div>
+            <div class="text-blue-200 text-sm">In Database</div>
         </div>
-
-        <!-- Total Reviews -->
-        <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 hover:border-yellow-500 transition group">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-gray-400 text-sm">Total Reviews</p>
-                    <p class="text-3xl font-bold mt-2">{{ $totalReviews }}</p>
-                </div>
-                <div class="text-3xl group-hover:scale-110 transition">⭐</div>
-            </div>
-            <div class="mt-4 text-sm text-blue-400">
-                +{{ $stats['reviews_this_week'] }} this week
-            </div>
+        
+        <div class="bg-purple-600 p-4 rounded-lg text-center">
+            <div class="text-2xl font-bold">{{ $stats['total_users'] }}</div>
+            <div class="text-purple-200 text-sm">Users</div>
         </div>
-
-        <!-- Fresh Movies -->
-        <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 hover:border-purple-500 transition group">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-gray-400 text-sm">Fresh Movies</p>
-                    <p class="text-3xl font-bold mt-2">{{ $stats['fresh_movies'] }}</p>
-                </div>
-                <div class="text-3xl group-hover:scale-110 transition">🍅</div>
-            </div>
-            <div class="mt-4 text-sm text-green-400">
-                {{ number_format(($stats['fresh_movies'] / max(1, $totalMovies)) * 100, 1) }}% of collection
-            </div>
+        
+        <div class="bg-orange-600 p-4 rounded-lg text-center">
+            <div class="text-2xl font-bold">{{ $stats['missing_posters'] }}</div>
+            <div class="text-orange-200 text-sm">Need Posters</div>
         </div>
     </div>
 
-    <!-- Additional Stats -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div class="bg-gray-800 p-6 rounded-xl border border-gray-700">
-            <p class="text-gray-400 text-sm">Average Rating</p>
-            <p class="text-2xl font-bold mt-2 flex items-center gap-2">
-                ⭐ {{ $stats['avg_rating'] }}/10
-            </p>
-        </div>
-        <div class="bg-gray-800 p-6 rounded-xl border border-gray-700">
-            <p class="text-gray-400 text-sm">Genres Available</p>
-            <p class="text-2xl font-bold mt-2">{{ $totalGenres }}</p>
-        </div>
-        <div class="bg-gray-800 p-6 rounded-xl border border-gray-700">
-            <p class="text-gray-400 text-sm">New This Week</p>
-            <p class="text-2xl font-bold mt-2">{{ $stats['movies_this_week'] }} movies</p>
-        </div>
+    <!-- Quick Action -->
+    <div class="mb-8">
+        <a href="{{ route('admin.movies') }}" 
+           class="bg-red-600 hover:bg-red-500 px-6 py-3 rounded-lg font-semibold inline-flex items-center gap-2 transition">
+            🎬 Add New Movie
+        </a>
     </div>
 
-    <!-- Content Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <!-- Recent Movies -->
-        <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
-            <h2 class="text-xl font-bold mb-4 flex items-center gap-2">🆕 Recent Movies</h2>
-            <div class="space-y-3">
-                @forelse($recentMovies as $movie)
-                    <div class="flex items-center gap-4 p-3 bg-gray-750 rounded-lg hover:bg-gray-700 transition group">
-                        <img src="{{ $movie->poster_url }}"
-                             alt="{{ $movie->title }}"
-                             class="w-12 h-16 object-cover rounded"
-                             onerror="this.src='https://via.placeholder.com/48x64/374151/6b7280?text=No+Image'">
-                        <div class="flex-1">
-                            <h3 class="font-semibold group-hover:text-blue-400 transition">{{ $movie->title }}</h3>
-                            <p class="text-sm text-gray-400">{{ $movie->release_year }}</p>
+    <!-- Two Column Layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Upcoming Movies -->
+        <div class="bg-gray-800 rounded-xl p-6">
+            <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+                📅 Upcoming Releases
+                <span class="bg-green-500 text-white px-2 py-1 rounded-full text-sm">
+                    {{ $stats['upcoming_count'] }}
+                </span>
+            </h2>
+            
+            <div class="space-y-4">
+                @foreach($upcomingMovies as $movie)
+                <div class="flex items-center gap-4 p-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition">
+                    <img src="{{ $movie->poster_url }}" 
+                         alt="{{ $movie->title }}"
+                         class="w-12 h-16 object-cover rounded"
+                         onerror="this.src='https://via.placeholder.com/48x64/374151/6b7280?text=No+Poster'">
+                    <div class="flex-1">
+                        <h3 class="font-semibold">{{ $movie->title }}</h3>
+                        <p class="text-gray-400 text-sm">Releases: {{ $movie->release_year }}</p>
+                        <div class="flex gap-1 mt-1">
+                            @foreach($movie->genres->take(2) as $genre)
+                                <span class="bg-gray-600 px-2 py-0.5 rounded text-xs">{{ $genre->name }}</span>
+                            @endforeach
+                        </div>
+                    </div>
+                    <a href="{{ route('admin.movies') }}" 
+                       class="bg-blue-600 hover:bg-blue-500 px-3 py-1 rounded text-sm transition">
+                        Edit
+                    </a>
+                </div>
+                @endforeach
+                
+                @if($upcomingMovies->isEmpty())
+                <p class="text-gray-400 text-center py-4">No upcoming movies. Add your first release!</p>
+                @endif
+            </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="space-y-6">
+            <!-- Recently Added -->
+            <div class="bg-gray-800 rounded-xl p-6">
+                <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+                    🆕 Recently Added
+                </h2>
+                
+                <div class="space-y-3">
+                    @foreach($recentMovies as $movie)
+                    <div class="flex justify-between items-center p-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition">
+                        <div>
+                            <h3 class="font-medium">{{ $movie->title }}</h3>
+                            <p class="text-gray-400 text-sm">{{ $movie->release_year }}</p>
                         </div>
                         <div class="text-right">
-                            <p class="text-sm text-gray-400">{{ $movie->created_at->diffForHumans() }}</p>
-                            <div class="flex gap-1 mt-1 justify-end">
-                                @foreach($movie->genres->take(2) as $genre)
-                                    <span class="text-xs bg-gray-700 px-2 py-1 rounded">{{ $genre->name }}</span>
-                                @endforeach
-                            </div>
+                            <p class="text-gray-400 text-sm">{{ $movie->created_at->diffForHumans() }}</p>
+                            <p class="text-yellow-400 text-sm">⭐ {{ $movie->average_rating ?? 'No ratings' }}</p>
                         </div>
                     </div>
-                @empty
-                    <p class="text-gray-400 text-center py-4">No movies added yet.</p>
-                @endforelse
+                    @endforeach
+                </div>
             </div>
-        </div>
 
-        <!-- Top Rated Movies -->
-        <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
-            <h2 class="text-xl font-bold mb-4 flex items-center gap-2">🏆 Top Rated Movies</h2>
-            <div class="space-y-3">
-                @forelse($topRatedMovies as $movie)
-                    <div class="flex items-center gap-4 p-3 bg-gray-750 rounded-lg hover:bg-gray-700 transition group">
-                        <img src="{{ $movie->poster_url }}"
-                             alt="{{ $movie->title }}"
-                             class="w-12 h-16 object-cover rounded"
-                             onerror="this.src='https://via.placeholder.com/48x64/374151/6b7280?text=No+Image'">
-                        <div class="flex-1">
-                            <h3 class="font-semibold group-hover:text-yellow-400 transition">{{ $movie->title }}</h3>
-                            <div class="flex items-center gap-2 text-sm">
-                                <span class="text-yellow-400">⭐ {{ number_format($movie->average_rating, 1) }}</span>
-                                <span class="text-gray-400">{{ $movie->tomatometer }}%</span>
-                            </div>
-                        </div>
-                        <div class="text-2xl">
-                            {{ $movie->tomatometer_icon }}
-                        </div>
+            <!-- Quick Stats -->
+            <div class="bg-gray-800 rounded-xl p-6">
+                <h2 class="text-xl font-bold mb-4">📊 Platform Stats</h2>
+                <div class="grid grid-cols-2 gap-4 text-center">
+                    <div class="bg-gray-700 p-3 rounded">
+                        <div class="text-lg font-bold">{{ $stats['total_reviews'] }}</div>
+                        <div class="text-gray-400 text-sm">Reviews</div>
                     </div>
-                @empty
-                    <p class="text-gray-400 text-center py-4">No ratings yet.</p>
-                @endforelse
+                    <div class="bg-gray-700 p-3 rounded">
+                        <div class="text-lg font-bold">{{ $stats['total_genres'] }}</div>
+                        <div class="text-gray-400 text-sm">Genres</div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Quick Actions -->
-    <div class="mt-8 bg-gray-800 rounded-xl p-6 border border-gray-700">
-        <h2 class="text-xl font-bold mb-4 flex items-center gap-2">⚡ Quick Actions</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <a href="{{ route('admin.movies') }}"
-               class="flex items-center gap-4 p-4 bg-blue-600 hover:bg-blue-500 rounded-lg transition group">
-                <span class="text-2xl group-hover:scale-110 transition">🎬</span>
-                <div>
-                    <p class="font-semibold">Manage Movies</p>
-                    <p class="text-sm text-blue-200">Add, edit, or delete movies</p>
-                </div>
-            </a>
-
-            <button class="flex items-center gap-4 p-4 bg-green-600 hover:bg-green-500 rounded-lg transition group">
-                <span class="text-2xl group-hover:scale-110 transition">🏷️</span>
-                <div>
-                    <p class="font-semibold">Manage Genres</p>
-                    <p class="text-sm text-green-200">Organize movie categories</p>
-                </div>
-            </button>
-
-            <button class="flex items-center gap-4 p-4 bg-purple-600 hover:bg-purple-500 rounded-lg transition group">
-                <span class="text-2xl group-hover:scale-110 transition">📊</span>
-                <div>
-                    <p class="font-semibold">View Analytics</p>
-                    <p class="text-sm text-purple-200">Detailed platform insights</p>
-                </div>
-            </button>
         </div>
     </div>
 </div>

@@ -33,15 +33,16 @@ class AdminMovies extends Component
         ];
     }
 
-    // ✅ Show create form
+    // ✅ Show create form - FIXED
     public function create()
     {
         $this->resetForm();
         $this->showForm = true;
         $this->isEditing = false;
+        $this->movieId = null;
     }
 
-    // ✅ Save new movie
+    // ✅ Save new movie - FIXED
     public function store()
     {
         $this->validate();
@@ -59,9 +60,10 @@ class AdminMovies extends Component
         session()->flash('success', '🎬 Movie added successfully!');
         $this->resetForm();
         $this->showForm = false;
+        $this->resetPage(); // Refresh the list
     }
 
-    // ✅ Load movie to edit
+    // ✅ Load movie to edit - FIXED
     public function loadMovie($movieId)
     {
         $movie = Movie::with('genres')->findOrFail($movieId);
@@ -77,7 +79,7 @@ class AdminMovies extends Component
         $this->showForm = true;
     }
 
-    // ✅ Update existing movie
+    // ✅ Update existing movie - FIXED
     public function update()
     {
         $this->validate();
@@ -100,9 +102,10 @@ class AdminMovies extends Component
         session()->flash('success', '✅ Movie updated successfully!');
         $this->resetForm();
         $this->showForm = false;
+        $this->resetPage(); // Refresh the list
     }
 
-    // ✅ Delete movie safely
+    // ✅ Delete movie safely - FIXED
     public function deleteMovie($movieId)
     {
         $movie = Movie::find($movieId);
@@ -116,15 +119,21 @@ class AdminMovies extends Component
         $movie->delete();
 
         session()->flash('success', '🗑️ Movie deleted successfully!');
-
-        // ✅ ADD THIS LINE - refreshes without manual refresh
-        $this->resetPage();
+        $this->resetPage(); // Refresh pagination
     }
 
-    // ✅ Reset form data
+    // ✅ Reset form data - FIXED
     public function resetForm()
     {
         $this->reset(['title', 'description', 'release_year', 'poster_url', 'selectedGenres', 'movieId']);
+        $this->resetErrorBag();
+    }
+
+    // ✅ Cancel form - NEW
+    public function cancel()
+    {
+        $this->resetForm();
+        $this->showForm = false;
     }
 
     public function render()
