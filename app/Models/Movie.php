@@ -40,6 +40,7 @@ class Movie extends Model
     {
         return $this->likes()->where('type', 'dislike')->count();
     }
+    
 
     public function getCommentsCountAttribute()
     {
