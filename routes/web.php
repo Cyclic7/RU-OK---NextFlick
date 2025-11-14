@@ -13,9 +13,9 @@ use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 
 // ⚙️ Settings Components
+use App\Livewire\MyProfile;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
-use App\Livewire\Settings\Profile;
 use App\Livewire\Settings\TwoFactor;
 
 // 🧩 Admin Components
@@ -38,40 +38,42 @@ Route::middleware(['guest'])->group(function () {
 });
 
 // ======================================================
-// 👤 USER DASHBOARD & PROFILE (Requires Login)
+// 👤 USER ROUTES (Requires Login)
 // ======================================================
 Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', \App\Livewire\Admin\Dashboard::class)->name('dashboard');
-    Route::get('/profile', Profile::class)->name('profile.show');
+
+    Route::get('/dashboard', Dashboard::class)->name('dashboard');
+
+    Route::get('/profile', MyProfile::class)->name('profile.show');
 });
 
 // ======================================================
-// 🧑‍💼 ADMIN ROUTES (Requires Login + Optional Admin Middleware)
+// 🧑‍💼 ADMIN ROUTES (Requires Login)
 // ======================================================
-Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', Dashboard::class)->name('dashboard');
-    Route::get('/movies', AdminMovies::class)->name('movies');
-
-    // You can add admin-specific middleware later:
-    // Route::middleware(['admin'])->group(function () {
-    //     // Admin-only routes
-    // });
-});
+Route::middleware(['auth'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::get('/', Dashboard::class)->name('dashboard');
+        Route::get('/movies', AdminMovies::class)->name('movies');
+    });
 
 // ======================================================
-// ⚙️ SETTINGS ROUTES (Fortify - Requires Login)
+// ⚙️ SETTINGS ROUTES (Requires Login)
 // ======================================================
 Route::middleware(['auth'])->group(function () {
+
     Route::redirect('settings', 'settings/profile')->name('settings');
 
-    Route::get('settings/profile', Profile::class)->name('profile.edit');
+    Route::get('settings/profile', MyProfile::class)->name('profile.edit');
     Route::get('settings/password', Password::class)->name('user-password.edit');
     Route::get('settings/appearance', Appearance::class)->name('appearance.edit');
 
     Route::get('settings/two-factor', TwoFactor::class)
         ->middleware(
-            Features::optionEnabled(Features::twoFactorAuthentication(), 'confirm') ?
-                ['password.confirm'] : []
+            Features::optionEnabled(Features::twoFactorAuthentication(), 'confirm')
+                ? ['password.confirm']
+                : []
         )
         ->name('two-factor.show');
 });
