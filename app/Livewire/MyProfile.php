@@ -101,15 +101,7 @@ class MyProfile extends Component
     /**
      * Switch to Guest (unauthenticated visitor)
      */
-    public function switchToGuest()
-    {
-        // Ensure we fully logout the user and redirect to home as a visitor
-        Auth::logout();
-        session()->invalidate();
-        session()->regenerateToken();
-
-        return redirect()->route('home');
-    }
+   
 
     /**
      * Show logout modal only

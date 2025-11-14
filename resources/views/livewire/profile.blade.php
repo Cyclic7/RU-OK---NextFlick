@@ -73,7 +73,7 @@
 
                 <h2 class="text-xl font-bold mb-4 text-white">Log Out Options</h2>
                 <p class="text-gray-300 mb-6">
-                    Do you want to fully log out or switch to guest mode?
+                    Do you want to fully log out?
                 </p>
 
                 <div class="space-y-4">
@@ -85,10 +85,7 @@
                     </button>
 
                     <!-- Guest Mode -->
-                    <button wire:click="switchToGuest"
-                            class="w-full py-2 bg-blue-600 hover:bg-blue-500 rounded-lg transition">
-                        Switch to Guest
-                    </button>
+                    
 
                     <!-- Cancel -->
                     <button x-on:click="open = false"
