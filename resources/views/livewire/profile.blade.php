@@ -51,7 +51,7 @@
                 </button>
             </div>
 
-            <!-- Logout Button -->
+            <!-- Simple Logout Button -->
             <div class="flex justify-center">
                 <button wire:click="logout"
                         class="px-6 py-2 bg-red-700 hover:bg-red-600 rounded-lg shadow transition">
@@ -60,44 +60,6 @@
             </div>
 
         </div>
-    </div>
-
-
-    <!-- Logout Modal -->
-    <div x-data="{ open: false }" x-on:show-logout-options.window="open = true">
-
-        <div x-show="open"
-             class="fixed inset-0 flex items-center justify-center bg-black/70 backdrop-blur">
-
-            <div class="bg-gray-900 border border-gray-700 p-8 rounded-2xl shadow-xl w-80">
-
-                <h2 class="text-xl font-bold mb-4 text-white">Log Out Options</h2>
-                <p class="text-gray-300 mb-6">
-                    Do you want to fully log out?
-                </p>
-
-                <div class="space-y-4">
-
-                    <!-- Full Logout -->
-                    <button wire:click="logoutCompletely"
-                            class="w-full py-2 bg-red-700 hover:bg-red-600 rounded-lg transition">
-                        Stay Logged Out
-                    </button>
-
-                    <!-- Guest Mode -->
-                    
-
-                    <!-- Cancel -->
-                    <button x-on:click="open = false"
-                            class="w-full py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition">
-                        Cancel
-                    </button>
-
-                </div>
-
-            </div>
-        </div>
-
     </div>
 
 </div>

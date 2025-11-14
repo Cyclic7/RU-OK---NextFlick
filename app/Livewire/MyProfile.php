@@ -19,10 +19,7 @@ class MyProfile extends Component
 
     public function mount()
     {
-        // mark guest if no authenticated user
-        $this->isGuest = ! Auth::check();
-
-        // Only set name if user exists (avoid null -> property error)
+        $this->isGuest = !Auth::check();
         $this->name = Auth::user()->name ?? '';
     }
 
@@ -31,9 +28,8 @@ class MyProfile extends Component
      */
     public function updateProfile()
     {
-        if (! Auth::check()) {
-            // If not authenticated, redirect to login (or show an error)
-            return redirect()->route('login');
+        if (!Auth::check()) {
+            return $this->redirect('/login', navigate: true);
         }
 
         $this->validate([
@@ -42,7 +38,7 @@ class MyProfile extends Component
 
         $user = Auth::user();
 
-        if (! $user instanceof User) {
+        if (!$user instanceof User) {
             $this->addError('auth', 'Authenticated user is not valid.');
             return;
         }
@@ -53,7 +49,6 @@ class MyProfile extends Component
             $user->save();
             session()->flash('success', 'Name updated successfully.');
         } catch (Throwable $e) {
-            // Log the exception if you want (laravel.log), and show friendly message
             logger()->error('Profile save error: ' . $e->getMessage());
             session()->flash('error', 'Unable to save changes. Please try again later.');
         }
@@ -64,8 +59,8 @@ class MyProfile extends Component
      */
     public function updatePassword()
     {
-        if (! Auth::check()) {
-            return redirect()->route('login');
+        if (!Auth::check()) {
+            return $this->redirect('/login', navigate: true);
         }
 
         $this->validate([
@@ -76,12 +71,12 @@ class MyProfile extends Component
 
         $user = Auth::user();
 
-        if (! $user instanceof User) {
+        if (!$user instanceof User) {
             $this->addError('auth', 'Authenticated user is not valid.');
             return;
         }
 
-        if (! Hash::check($this->currentPassword, $user->password)) {
+        if (!Hash::check($this->currentPassword, $user->password)) {
             $this->addError('currentPassword', 'Current password is incorrect.');
             return;
         }
@@ -99,29 +94,21 @@ class MyProfile extends Component
     }
 
     /**
-     * Switch to Guest (unauthenticated visitor)
-     */
-   
-
-    /**
      * Show logout modal only
      */
-    public function logout()
-    {
-        $this->dispatch('show-logout-options');
-    }
+   public function logout()
+{
+    Auth::logout();
+    session()->invalidate();
+    session()->regenerateToken();
+
+    return redirect('/');
+}
 
     /**
-     * Fully logout after modal selection
+     * Fully logout after modal button press
      */
-    public function logoutCompletely()
-    {
-        Auth::logout();
-        session()->invalidate();
-        session()->regenerateToken();
 
-        return redirect()->route('login');
-    }
 
     public function render()
     {
